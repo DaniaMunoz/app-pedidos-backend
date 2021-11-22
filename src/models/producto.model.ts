@@ -16,10 +16,10 @@ export class Producto extends Entity {
   nombre: string;
 
   @property({
-    type: 'string',
+    type: 'number',
     required: true,
   })
-  precio: string;
+  precio: number;
 
   @property({
     type: 'string',

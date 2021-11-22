@@ -1,5 +1,6 @@
 import { /* inject, */ BindingScope, injectable} from '@loopback/core';
 import {repository} from '@loopback/repository';
+import {Llaves} from '../config/llaves';
 import {Persona} from '../models';
 import {PersonaRepository} from '../repositories';
 
@@ -48,9 +49,26 @@ export class AutenticacionService {
         id: persona.id,
         correo: persona.correo,
         nombre: persona.nombres + " " + persona.apellidos
-      },
-    })
+      }
+    },
+      Llaves.claveJWT);
+    return token;
 
   }
+
+
+  ValidarTokenJWT(token: string) {
+    try {
+      let datos = jwt.verify(token, Llaves.claveJWT);
+      return datos;
+
+    } catch {
+      return false;
+
+    }
+  }
+
+
+
 
 }

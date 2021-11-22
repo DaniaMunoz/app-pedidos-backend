@@ -1,30 +1,30 @@
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-  response,
+  del, get,
+  getModelSchemaRef, param, patch, post, put, requestBody,
+  response
 } from '@loopback/rest';
 import {Producto} from '../models';
 import {ProductoRepository} from '../repositories';
 
+
+@authenticate("admin") //Corro la validación acá para que me pida el token en el post, get y delete, en todos.
 export class ProductoController {
   constructor(
     @repository(ProductoRepository)
-    public productoRepository : ProductoRepository,
-  ) {}
+    public productoRepository: ProductoRepository,
+  ) { }
+
+
+  //@authenticate("admin") //Antes de crear un producto hace validación del usuario
 
   @post('/productos')
   @response(200, {
@@ -47,6 +47,8 @@ export class ProductoController {
     return this.productoRepository.create(producto);
   }
 
+
+  @authenticate.skip() //Protege a todas pero se salta esta
   @get('/productos/count')
   @response(200, {
     description: 'Producto model count',
